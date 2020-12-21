@@ -1,22 +1,28 @@
-from psutil import sensors_battery as battery
-
-commands = {
-    'Linux': ['cat','/sys/class/power_supply/BAT0/capacity'],
-    'Windows': ['WMIC', 'PATH', 'Win32_Battery', 'Get', 'EstimatedChargeRemaining'],
-}
+from plyer import notification, battery
 
 def readBattery():
     # TODO: Add docstring
     try:
-        battery_status = battery()
-        if(battery_status == None):
+        # Read battery status in the form {'isCharging': False, 'percentage': 69.0}
+        battery_status = battery.status # dict
+        if(battery_status['percentage'] == None):
             raise Exception("Battery NOT FOUND!")
-        battery_percentage = (int)(battery_status.percent)
-        print(battery_percentage)
+        return battery_status
     except Exception as e:
-        raise Exception(f'Error in charge_info.py:readBattery: {str(e)}')
+        raise Exception(f'Error in charge_info.py:readBattery - {str(e)}')
 
-readBattery()
+def notify(message):
+    # TODO: Add docstring
+    try:
+        notification.notify(
+            title='Carica Bot',
+            message=message,
+            app_name='Carica Bot',
+            app_icon='./carica_bot_logo.jpg',
+        )
+    except Exception as e:
+        raise Exception(f'Error in charge_info.py:notify - {str(e)}')
+
 
 """
 References:
@@ -31,5 +37,7 @@ References:
     -   [Python script to shows Laptop Battery Percentage - GeeksforGeeks]
         (https://www.geeksforgeeks.org/python-script-to-shows-laptop-battery-percentage/)
     -   [psutil - PyPI](https://pypi.org/project/psutil/)
+    -   [Plyer documentation](https://plyer.readthedocs.io/en/latest/)
+    -   [dbus warning in plyer - Stack Overflow](https://stackoverflow.com/a/54072196)
 
 """
