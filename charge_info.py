@@ -1,5 +1,4 @@
-from platform import system as ps
-import subprocess
+from psutil import sensors_battery as battery
 
 commands = {
     'Linux': ['cat','/sys/class/power_supply/BAT0/capacity'],
@@ -8,13 +7,14 @@ commands = {
 
 def readBattery():
     # TODO: Add docstring
-    read_battery_command = commands.get(ps(), 'NA')
-    if(read_battery_command == 'NA'):
-        return -1 # TODO: Raise exception here
-    # TODO: Use Try/Except here
-    battery_percentage = subprocess.run(read_battery_command, stdout=subprocess.PIPE, text=True,)
-    battery_percentage = (int)(battery_percentage.stdout[:-1])
-    print(battery_percentage)
+    try:
+        battery_status = battery()
+        if(battery_status == None):
+            raise Exception("Battery NOT FOUND!")
+        battery_percentage = (int)(battery_status.percent)
+        print(battery_percentage)
+    except Exception as e:
+        raise Exception(f'Error in charge_info.py:readBattery: {str(e)}')
 
 readBattery()
 
@@ -28,5 +28,8 @@ References:
         (https://stackoverflow.com/questions/89228/how-to-call-an-external-command)
     -   [How to check Battery level via Command line | Scott Larson]
         (http://www.scottrlarson.com/updates/update-battery-life-via-cmd-line/)
+    -   [Python script to shows Laptop Battery Percentage - GeeksforGeeks]
+        (https://www.geeksforgeeks.org/python-script-to-shows-laptop-battery-percentage/)
+    -   [psutil - PyPI](https://pypi.org/project/psutil/)
 
 """
