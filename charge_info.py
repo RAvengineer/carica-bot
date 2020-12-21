@@ -1,4 +1,5 @@
 from plyer import notification, battery
+from os import getcwd
 
 def readBattery():
     # TODO: Add docstring
@@ -18,11 +19,10 @@ def notify(message):
             title='Carica Bot',
             message=message,
             app_name='Carica Bot',
-            app_icon='./carica_bot_logo.jpg',
+            app_icon=f'{getcwd()}/carica_bot_logo.jpg',
         )
     except Exception as e:
         raise Exception(f'Error in charge_info.py:notify - {str(e)}')
-
 
 """
 References:
