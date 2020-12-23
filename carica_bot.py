@@ -18,13 +18,13 @@ class CaricaBot(discord.Client):
 
         Returns
         -------
-        discord.TextChannel
-            Instance of the text channel for the bot
+        - discord.TextChannel
+            - Instance of the text channel for the bot
         
         Raises
         ------
-            Exception
-                Custom Exception
+        - ChannelNotFound
+        - ChannelNotCreated
         """
         
         # If the property: caricare_channel is not null, that implies that it 
@@ -44,7 +44,14 @@ class CaricaBot(discord.Client):
                     self.caricare_channel = channel
                     return channel
         except Exception as e:
-            raise Exception(f'Error in carica_bot: getChannel - {str(e)}')
+            raise ChannelNotFound(self.channel_name, str(e))
+
+        # If channel doesn't exist, then create one
+        try:    
+            self.caricare_channel = await guild.create_text_channel(self.channel_name)
+            return self.caricare_channel
+        except Exception as e:
+            raise ChannelNotCreated(self.channel_name, str(e))
 
     async def on_ready(self):
         """Print bot details & send User details to the 'caricare' channel
@@ -52,3 +59,7 @@ class CaricaBot(discord.Client):
         """
         print(f'Logged in as {self.user.name} - {self.user.id}')
         print('------')
+
+# Exceptions
+ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
+ChannelNotCreated = lambda name, error: Exception(f'Error in carica_bot: getChannel - Could not create {name} channel\n{error}')
