@@ -74,7 +74,34 @@ class CaricaBot(discord.Client):
             f'with username: **{system_details.node}**'
         )
         print('Login message sent') # TODO: Convert print to log
+    
+    
+    async def on_message(self, message:discord.Message):
+        """Respond when message received from the user
+
+        Parameters
+        ----------
+        - message : `discord.Message`
+            - Instance of the message received
+
+        Raises
+        ------
+        - MessageNotSent
+            - Raise custom Exception when `discord.TextChannel.send` throws an Exception
+        """
+
+        # Avoid the message, if the bot itself is the author of the message
+        if message.author == self.user:
+            return
+        
+        # Respond when summoned
+        try:
+            if message.content.startswith('$crc'):
+                await self.caricare_channel.send(f'Hello, {message.author.display_name}! :wave:')
+        except Exception as e:
+            raise MessageNotSent(str(e))
 
 # Exceptions
 ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
 ChannelNotCreated = lambda name, error: Exception(f'Error in carica_bot: getChannel - Could not create {name} channel\n{error}')
+MessageNotSent = lambda error: Exception(f'Error in carica_bot: on_message - Could not send message\n{error}')
