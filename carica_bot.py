@@ -10,6 +10,41 @@ class CaricaBot(discord.Client):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.channel_name = 'caricare'
+        self.caricare_channel = None
+    
+    async def getChannel(self) -> discord.TextChannel:
+        """Retrieve the caricare channel for the bot to communicate in.
+
+        Returns
+        -------
+        discord.TextChannel
+            Instance of the text channel for the bot
+        
+        Raises
+        ------
+            Exception
+                Custom Exception
+        """
+        
+        # If the property: caricare_channel is not null, that implies that it 
+        # contains instance of the caricare channel, 
+        # then return the channel instance
+        if(self.caricare_channel != None):
+            return self.caricare_channel
+        
+        # Server is referred to as a Guild in the API
+        # Assumming that the bot was invited to only one server,
+        # the first element retrieved from the list is considered to send
+        # the messages to
+        try:
+            guild : discord.Guild = self.guilds[0]
+            for channel in guild.channels:
+                if(channel.name == self.channel_name and channel.type == discord.ChannelType.text):
+                    self.caricare_channel = channel
+                    return channel
+        except Exception as e:
+            raise Exception(f'Error in carica_bot: getChannel - {str(e)}')
 
     async def on_ready(self):
         """Print bot details & send User details to the 'caricare' channel
