@@ -11,8 +11,8 @@ class CaricaBot(discord.Client):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.channel_name = 'caricare'
-        self.caricare_channel = None
+        self.channel_name: str = 'caricare'
+        self.caricare_channel: discord.TextChannel = None
     
     async def getChannel(self) -> discord.TextChannel:
         """Retrieve the caricare channel for the bot to communicate in.
