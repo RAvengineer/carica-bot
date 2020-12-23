@@ -2,6 +2,7 @@
 """
 
 import discord
+from platform import uname
 
 class CaricaBot(discord.Client):
     """CaricaBot class that extends the discord.Client class
@@ -57,8 +58,22 @@ class CaricaBot(discord.Client):
         """Print bot details & send User details to the 'caricare' channel
         when bot is ready.
         """
+        
+        # Print client details
+        # TODO: Change print to log
         print(f'Logged in as {self.user.name} - {self.user.id}')
         print('------')
+
+        # Retrieve the channel for the bot
+        channel = await self.getChannel()
+        # Send user machine details to the channel
+        system_details = uname()
+        await channel.send(
+            'Carica-Bot at your service! :robot:\n' + 
+            f'Logged in from a **{system_details.system}** system ' + 
+            f'with username: **{system_details.node}**'
+        )
+        print('Login message sent') # TODO: Convert print to log
 
 # Exceptions
 ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
