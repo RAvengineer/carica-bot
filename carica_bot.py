@@ -103,13 +103,31 @@ class CaricaBot(discord.Client):
         except Exception as e:
             raise MessageNotSent(str(e))
     
-    
+
     async def close(self):
+        """Send a Goodbye message & logs out the bot.
+
+        discord.Client.logout() method could have been overriden, however, after
+        reading the API docs, it turns out that the 'logout' method is an alias
+        to the actual 'close' method. The method closes all websocket connections
+        of the bot to Discord. Before the bot is logged out, it sends a final
+        goodbye message to denote that the bot has logged out.
+
+        NOTE: This method might not be called, if the program is terminated
+        abruptly. Thus, the bot will be shown offline in the server/guild as the
+        connections are broken, but the Goodbye message won't be received.
+
+        Raises
+        ------
+        MessageNotSent
+            Custom exception for failure in message sending
+        """
         try:
             await self.caricare_channel.send('Bye, bye! :wave:')
         except Exception as e:
             raise MessageNotSent(str(e))
         await super().close()
+
 
 # Exceptions
 ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
