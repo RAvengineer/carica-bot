@@ -14,6 +14,7 @@ class CaricaBot(discord.Client):
         self.channel_name: str = 'caricare'
         self.caricare_channel: discord.TextChannel = None
     
+
     async def getChannel(self) -> discord.TextChannel:
         """Retrieve the caricare channel for the bot to communicate in.
 
@@ -54,11 +55,12 @@ class CaricaBot(discord.Client):
         except Exception as e:
             raise ChannelNotCreated(self.channel_name, str(e))
 
+
     async def on_ready(self):
         """Print bot details & send User details to the 'caricare' channel
         when bot is ready.
         """
-        
+
         # Print client details
         # TODO: Change print to log
         print(f'Logged in as {self.user.name} - {self.user.id}')
@@ -75,7 +77,7 @@ class CaricaBot(discord.Client):
         )
         print('Login message sent') # TODO: Convert print to log
     
-    
+
     async def on_message(self, message:discord.Message):
         """Respond when message received from the user
 
@@ -100,6 +102,14 @@ class CaricaBot(discord.Client):
                 await self.caricare_channel.send(f'Hello, {message.author.display_name}! :wave:')
         except Exception as e:
             raise MessageNotSent(str(e))
+    
+    
+    async def close(self):
+        try:
+            await self.caricare_channel.send('Bye, bye! :wave:')
+        except Exception as e:
+            raise MessageNotSent(str(e))
+        await super().close()
 
 # Exceptions
 ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
