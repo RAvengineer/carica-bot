@@ -123,7 +123,8 @@ class CaricaBot(discord.Client):
             Custom exception for failure in message sending
         """
         try:
-            await self.caricare_channel.send('Bye, bye! :wave:')
+            if(self.caricare_channel):
+                await self.caricare_channel.send('Bye, bye! :wave:')
         except Exception as e:
             raise MessageNotSent(str(e))
         await super().close()
