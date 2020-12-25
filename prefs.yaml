@@ -1,0 +1,6 @@
+# Preferences for the program & bot
+
+# Limits for battery percent
+battery-percent:
+  max: 98
+  min: 25
