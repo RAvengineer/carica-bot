@@ -15,6 +15,8 @@ class CaricaBot(discord.Client):
         super().__init__(*args, **kwargs)
         self.channel_name: str = 'caricare'
         self.caricare_channel: discord.TextChannel = None
+        # create the background task and run it in the background
+        self.battery_status_task = self.loop.create_task(self.batteryStatus())
     
 
     async def getChannel(self) -> discord.TextChannel:
@@ -133,6 +135,8 @@ class CaricaBot(discord.Client):
 
 
     async def batteryStatus(self):
+        """Check the battery status & send message to the channel"""
+        
         await self.wait_until_ready()
         # While the bot is connected
         while not self.is_closed():
