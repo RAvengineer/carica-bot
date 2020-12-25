@@ -70,7 +70,7 @@ def checkBattery() -> dict:
         # different function, this function will be always read
         # the modified value as this function will be called periodically.
         with open(getenv('BOT_PREFS')) as prefs:
-            battery_percent: dict = safe_load(prefs)['battery-percent']
+            battery_percent: dict = safe_load(prefs)['battery']['percent']
             max_percent = battery_percent['max']
             min_percent = battery_percent['min']
         

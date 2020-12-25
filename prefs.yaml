@@ -1,6 +1,14 @@
 # Preferences for the program & bot
 
 # Limits for battery percent
-battery-percent:
-  max: 98
-  min: 25
+battery:
+
+  # Battery percentage
+  percent:
+    max: 98
+    min: 25
+  
+  # Interval(in minutes(integer)) in which the battery status should be read
+  check-interval:
+    min: 2 # => battery status will be read in atleast 'min' minutes
+    max: 10
