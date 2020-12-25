@@ -76,12 +76,12 @@ def checkBattery() -> dict:
         
         msg: str = None
         # Set message for specific conditions
-        if (percent > max_percent and is_charging):
-            msg = f'Unplug the charger.'
-        elif ((-2 < percent - 50 < 2) and (not is_charging)):
-            msg = f'Battery is half-way through.'
-        elif (percent < min_percent and (not is_charging)):
-            msg = f'Plug the charger.'
+        if (percent >= max_percent and is_charging):
+            msg = f'Disconnect the charger. :battery: '
+        elif ((-2 <= percent - 50 <= 2) and (not is_charging)):
+            msg = f'Battery is half-way through. :hourglass: '
+        elif (percent <= min_percent and (not is_charging)):
+            msg = f'Plug the charger. :computer: :electric_plug: '
         
         # Return dict with msg & percentage 
         return {'msg': msg, 'percent': percent}
