@@ -13,13 +13,26 @@ def readBattery():
         raise Exception(f'Error in charge_info.py:readBattery - {str(e)}')
 
 def notify(message):
-    # TODO: Add docstring
+    """Send a notification to the user machine
+
+    Parameters
+    ----------
+    - message : `str`
+        - The message to be displayed in the notification
+
+    Raises
+    ------
+    - Exception
+        - Custom Exception
+    """
+    # TODO: Change Exception desc in Docstring
     try:
         notification.notify(
             title='Carica Bot',
             message=message,
             app_name='Carica Bot',
             app_icon=f'{getcwd()}/carica_bot_logo.jpg',
+            timeout=60,
         )
     except Exception as e:
         raise Exception(f'Error in charge_info.py:notify - {str(e)}')
