@@ -50,6 +50,17 @@ def notify(message):
         raise Exception(f'Error in charge_info.py:notify - {str(e)}')
 
 def checkBattery() -> dict:
+    """Check system battery parameters
+
+    Retrieves the battery_status from readBattery() & bot prefrences from
+    prefs.yaml file. Then, check if the current battery percentage matches 
+    any of the situations, where the user needs to be notified.
+
+    Returns
+    -------
+    dict: {'msg': str, 'percent': float}
+    - 'msg' will be `None` if all conditions for notification are invalid.
+    """
     try:
         battery_status: dict = readBattery()
         percent, is_charging = battery_status['percentage'], battery_status['isCharging']
