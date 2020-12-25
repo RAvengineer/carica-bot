@@ -4,7 +4,7 @@
 import discord
 from platform import uname
 from asyncio import sleep
-from charge_info import checkBattery
+from charge_info import checkBattery, getCheckInterval
 
 class CaricaBot(discord.Client):
     """CaricaBot class that extends the discord.Client class
@@ -136,10 +136,11 @@ class CaricaBot(discord.Client):
 
     async def batteryStatus(self):
         """Check the battery status & send message to the channel"""
-        
+
         await self.wait_until_ready()
         # While the bot is connected
         while not self.is_closed():
+            percent = 100
             # Check if the instance of the channel exists
             if(self.caricare_channel):
                 # Retrieve battery status
@@ -151,7 +152,9 @@ class CaricaBot(discord.Client):
                     msg += f' \nBattery: {percent}%'
                     # Send the message to the channel
                     await self.caricare_channel.send(msg)
-            await sleep(10.0)
+            
+            # Retrieve interval for sleep
+            await sleep(getCheckInterval(percent) * 60.0)
 
 
 # Exceptions
