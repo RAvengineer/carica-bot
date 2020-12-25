@@ -2,7 +2,7 @@
 
 from plyer import notification, battery
 from os import getcwd, getenv
-from yaml import safe_load, safe_dump
+from yaml import safe_load
 
 def readBattery() -> dict:
     """Read system battery parameters
@@ -89,6 +89,24 @@ def checkBattery() -> dict:
         # TODO: Convert print to logs
         print(f'Exception in charge_info:checkBattery()\n{str(e)}')
 
+def getCheckInterval(battery_percent: float) -> int:
+    """Calculate the interval for sleep for given battery percentage.
+
+    Parameters
+    ----------
+    - battery_percent : `float`
+        - Amount of charge remaining in system battery in percentage
+
+    Returns
+    -------
+    `int`   Interval of time for sleeping in minutes
+    """
+     
+    with open(getenv('BOT_PREFS')) as prefs:
+            check_interval: dict = safe_load(prefs)['battery']['check-interval']
+            max_sleep = check_interval['max']
+            min_sleep = check_interval['min']
+    return (min_sleep)
 
 """
 References:
