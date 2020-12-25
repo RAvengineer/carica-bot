@@ -1,7 +1,10 @@
-from plyer import notification, battery
-from os import getcwd
+"""Utilities for processing & analyzing battery details"""
 
-def readBattery():
+from plyer import notification, battery
+from os import getcwd, getenv
+from yaml import safe_load, safe_dump
+
+def readBattery() -> dict:
     # TODO: Add docstring
     try:
         # Read battery status in the form {'isCharging': False, 'percentage': 69.0}
@@ -36,6 +39,25 @@ def notify(message):
         )
     except Exception as e:
         raise Exception(f'Error in charge_info.py:notify - {str(e)}')
+
+def checkBattery():
+    try:
+        battery_status: dict = readBattery()
+        percent, is_charging = battery_status['percentage'], battery_status['isCharging']
+
+        # Read the battery prefs from the prefs.yaml
+        # The values are read in this function, coz if the prefs are modified by a 
+        # different function, this function will be always read
+        # the modified value as this function will be called periodically.
+        with open(getenv('BOT_PREFS')) as prefs:
+            battery_percent: dict = safe_load(prefs)['battery-percent']
+            max_percent = battery_percent['max']
+            min_percent = battery_percent['min']
+
+    except Exception as e:
+        # TODO: Convert print to logs
+        print(f'Exception in charge_info:checkBattery()\n{str(e)}')
+
 
 """
 References:
