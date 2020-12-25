@@ -157,6 +157,10 @@ class CaricaBot(discord.Client):
             await sleep(getCheckInterval(percent) * 60.0)
 
 
+def activateCaricaBot(BOT_TOKEN: str) -> None:
+    carica_bot = CaricaBot()
+    carica_bot.run(BOT_TOKEN)
+
 # Exceptions
 ChannelNotFound = lambda name, error : Exception(f'Error in carica_bot: getChannel - Could not find {name} channel\n{error}')
 ChannelNotCreated = lambda name, error: Exception(f'Error in carica_bot: getChannel - Could not create {name} channel\n{error}')
