@@ -5,7 +5,8 @@ Project in progress...
 - [X] Offline notifications on system
 - [X] System platform independent
 - [X] Automatic discord channel creation
-- [ ] Modify preferences from a single file
+- [X] Modify preferences from a single YAML file
+- [ ] Variable battery check interval for reduced I/O overhead
 - [ ] Logs for debugging
 
 ## What did I learn?
@@ -17,7 +18,7 @@ Project in progress...
 - [multiprocessing docs](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Process)
 - [YAML](https://yaml.org/)
 
-## References:
+## References
 - Discord
     - [How do I send a message to a specific channel? · FAQs discord.py](https://discordpy.readthedocs.io/en/latest/faq.html?highlight=channel#how-do-i-send-a-message-to-a-specific-channel)
     - [discord.py - Docs](https://discordpy.readthedocs.io/en/latest/api.html#textchannel)
