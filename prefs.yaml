@@ -4,6 +4,8 @@
 battery:
 
   # Battery percentage
+  # Recommended to keep these values in the range [10,98] inclusive
+  # NOTE: Choose the values such that 'min' < 'max'
   percent:
     max: 98
     min: 25
