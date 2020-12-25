@@ -40,7 +40,7 @@ def notify(message):
     except Exception as e:
         raise Exception(f'Error in charge_info.py:notify - {str(e)}')
 
-def checkBattery():
+def checkBattery() -> dict:
     try:
         battery_status: dict = readBattery()
         percent, is_charging = battery_status['percentage'], battery_status['isCharging']
@@ -53,7 +53,18 @@ def checkBattery():
             battery_percent: dict = safe_load(prefs)['battery-percent']
             max_percent = battery_percent['max']
             min_percent = battery_percent['min']
-
+        
+        msg: str = None
+        # Set message for specific conditions
+        if (percent > max_percent and is_charging):
+            msg = f'Unplug the charger.'
+        elif ((-2 < percent - 50 < 2) and (not is_charging)):
+            msg = f'Battery is half-way through.'
+        elif (percent < min_percent and (not is_charging)):
+            msg = f'Plug the charger.'
+        
+        # Return dict with msg & percentage 
+        return {'msg': msg, 'percent': percent}
     except Exception as e:
         # TODO: Convert print to logs
         print(f'Exception in charge_info:checkBattery()\n{str(e)}')
