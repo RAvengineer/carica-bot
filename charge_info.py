@@ -5,7 +5,17 @@ from os import getcwd, getenv
 from yaml import safe_load, safe_dump
 
 def readBattery() -> dict:
-    # TODO: Add docstring
+    """Read system battery parameters
+
+    Returns
+    -------
+    - dict: {'percentage': `float`, 'isCharging': `bool`}
+
+    Raises
+    ------
+    - Exception
+        - Custom Exception
+    """
     try:
         # Read battery status in the form {'isCharging': False, 'percentage': 69.0}
         battery_status = battery.status # dict
@@ -28,7 +38,6 @@ def notify(message):
     - Exception
         - Custom Exception
     """
-    # TODO: Change Exception desc in Docstring
     try:
         notification.notify(
             title='Carica Bot',
