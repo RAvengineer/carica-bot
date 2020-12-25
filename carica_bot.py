@@ -3,6 +3,8 @@
 
 import discord
 from platform import uname
+from asyncio import sleep
+from charge_info import checkBattery
 
 class CaricaBot(discord.Client):
     """CaricaBot class that extends the discord.Client class
@@ -119,8 +121,8 @@ class CaricaBot(discord.Client):
 
         Raises
         ------
-        MessageNotSent
-            Custom exception for failure in message sending
+        - MessageNotSent
+            - Custom exception for failure in message sending
         """
         try:
             if(self.caricare_channel):
@@ -128,6 +130,24 @@ class CaricaBot(discord.Client):
         except Exception as e:
             raise MessageNotSent(str(e))
         await super().close()
+
+
+    async def batteryStatus(self):
+        await self.wait_until_ready()
+        # While the bot is connected
+        while not self.is_closed():
+            # Check if the instance of the channel exists
+            if(self.caricare_channel):
+                # Retrieve battery status
+                battery_status = checkBattery()
+                # Check if the user is to be notified
+                # (Read checkBattery docs to understand)
+                if(battery_status['msg']):
+                    percent, msg = battery_status['percent'], battery_status['msg']
+                    msg += f' \nBattery: {percent}%'
+                    # Send the message to the channel
+                    await self.caricare_channel.send(msg)
+            await sleep(10.0)
 
 
 # Exceptions
