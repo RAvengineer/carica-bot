@@ -9,7 +9,7 @@ def readBattery() -> dict:
 
     Returns
     -------
-    - dict: {'percentage': `float`, 'isCharging': `bool`}
+    - dict: {'isCharging': `bool`, 'percentage': `float`}
 
     Raises
     ------
