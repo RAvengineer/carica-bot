@@ -102,8 +102,11 @@ class CaricaBot(discord.Client):
         
         # Respond when summoned
         try:
-            if message.content.startswith('$crc'):
-                await self.caricare_channel.send(f'Hello, {message.author.display_name}! :wave:')
+            if message.content.startswith('!crc'):
+                await self.caricare_channel.send(
+                    content = f'Hello, {message.author.display_name}! :wave:', 
+                    delete_after = 2*60.0
+                )
         except Exception as e:
             raise MessageNotSent(str(e))
     
