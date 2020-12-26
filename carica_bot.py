@@ -4,7 +4,7 @@
 import discord
 from platform import uname
 from asyncio import sleep
-from charge_info import checkBattery, getCheckInterval
+from charge_info import checkBattery, getCheckInterval, readBattery
 
 class CaricaBot(discord.Client):
     """CaricaBot class that extends the discord.Client class
@@ -102,11 +102,31 @@ class CaricaBot(discord.Client):
         
         # Respond when summoned
         try:
-            if message.content.startswith('!crc'):
-                await self.caricare_channel.send(
-                    content = f'Hello, {message.author.display_name}! :wave:', 
-                    delete_after = 2*60.0
-                )
+            # Command to start a chat with the bot
+            invoke_command: str = '!crc'
+            # Retrieve the message content
+            msg: str = message.content
+
+            # Check if the message starts with the invoke bot command
+            if msg.startswith(invoke_command):
+                # Seperate the actual command purpose from the invoke command prefix
+                command = msg.removeprefix(invoke_command).strip()
+                
+                # Say Hello if no command passed
+                if (command == ''):
+                    await self.caricare_channel.send(
+                        content = f'Hello, {message.author.display_name}! :wave:', 
+                        delete_after = 2*60.0
+                    )
+                # Provide the battery status for the said commands
+                elif (command == '?' or command == 'status'):
+                    battery = readBattery()
+                    percent = battery['percentage']
+                    chargingStatus = 'charging' if(battery['isCharging']) else 'discharging'
+                    await self.caricare_channel.send(
+                        content = f'**Battery Status**:\nBattery charge is at *{percent}%* & is *{chargingStatus}* now.', 
+                        delete_after = 2*60.0
+                    )
         except Exception as e:
             raise MessageNotSent(str(e))
     
