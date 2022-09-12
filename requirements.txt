@@ -1,4 +1,4 @@
-dbus-python==1.2.16
+dbus-python==1.3.2
 discord.py==1.7.2
 plyer==2.0.0
 psutil==5.8.0
